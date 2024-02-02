@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>802</width>
+    <height>328</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="3" column="0">
+     <widget class="QListWidget" name="lista_Pendientes"/>
+    </item>
+    <item row="3" column="1">
+     <widget class="QListWidget" name="lista_EnProgreso"/>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLabel" name="label_EnProgreso">
+      <property name="styleSheet">
+       <string notr="true">background-color: #87CEFA;
+text-transform: uppercase;
+font: bold</string>
+      </property>
+      <property name="text">
+       <string>En Progreso</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="2">
+     <widget class="QListWidget" name="Lista_Completadas"/>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_Pendientes">
+      <property name="styleSheet">
+       <string notr="true">background-color: #F08080;
+text-transform: uppercase;
+font: bold</string>
+      </property>
+      <property name="text">
+       <string>Pendientes</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QLabel" name="label_Completadas">
+      <property name="styleSheet">
+       <string notr="true">background-color: #32CD32;
+text-transform: uppercase;
+font: bold</string>
+      </property>
+      <property name="text">
+       <string>Completadas</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLabel" name="label_Titulo">
+      <property name="styleSheet">
+       <string notr="true">background-color: #A9A9A9;
+text-transform: uppercase;
+font: bold;
+text: center
+</string>
+      </property>
+      <property name="text">
+       <string>Tablero Kanban</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

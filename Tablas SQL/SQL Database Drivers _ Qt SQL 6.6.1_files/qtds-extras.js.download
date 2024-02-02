@@ -1,0 +1,304 @@
+// Resolve preferred theme
+var theme = localStorage.getItem('theme') || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+if (theme)
+    document.documentElement.setAttribute('data-theme', theme);
+
+function createCookie(name, value, days, root) {
+    var params = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        params = "; expires=" + date.toGMTString();
+    }
+    if (root)
+        params += "; path=/";
+    document.cookie = escape(name) + "=" + escape(value) + params;
+}
+
+function readCookie(name) {
+    var nameEQ = escape(name) + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) === 0) return unescape(c.substring(nameEQ.length, c.length));
+    }
+    return null;
+}
+
+$(function () {
+    // html5 video animation play/pause controls
+    $('.animation').parent().click(function () {
+        var video = $(this).children(".animation").get(0);
+        if (typeof video.currentSrc == 'undefined')
+            return;
+        var control = $(this).children(".playcontrol");
+        if (video.paused) {
+            control.fadeOut(); video.play();
+        } else {
+            control.fadeIn(); video.pause();
+        }
+    });
+    // enable controls for animations
+    $('.animation').parent().each(function() {
+        var src = $(this).children(".animation").get(0).currentSrc;
+        if (typeof src != 'undefined')
+            $(this).children(".playcontrol").show();
+    });
+});
+
+const copyContent = async (el) => {
+  try {
+    await navigator.clipboard.writeText(el.text().trim());
+  } catch (err) {
+    console.error('Failed to copy: ', err);
+  }
+};
+
+const toggleWrap = () => {
+    $('.pre pre').each(function() {
+        if ($(this).hasClass('wrap'))
+            return;
+        var s = $(this).get(0).scrollWidth - $(this).innerWidth();
+        $(this).parent().find('.pre-button.wrap').toggle(Math.round(s) > 0);
+    });
+    return toggleWrap;
+};
+
+const preButtons = `
+  <div class="pre-buttons">
+    <button class='pre-button wrap'
+        onclick='$(this).parent().parent().children("pre:first-child").toggleClass("wrap");'
+    ><i class="fa fa-exchange"></i></button>
+    <button class="pre-button copy"
+        onclick='copyContent($(this).parent().parent().children("pre:first-child"))'
+    ><i class="fa fa-copy"></i></button>
+</div>
+`;
+
+// promo banners
+const promoHtml = (href, img) => `
+<div id="footer-promo" style="background:var(--content-bg-color);margin:0;width:100%;max-width:initial">
+    <div class="container">
+        <a href="${href}" target="_blank"><img src="${img}" style="display:block;max-width:100%;height:auto;margin:0 auto"></a>
+    </div>
+</div>
+`;
+
+const addPromo = () => {
+    var fname = window.location.pathname.split('/').pop() || 'index.html';
+    if (fname !== 'index.html')
+        return;
+    var promos = $('body > div#footer');
+    $.getJSON("/.promos/promo.json", function(data) {
+        for (var i = 0; i < data.promos.length; i++)
+            promos.prepend(promoHtml(data.promos[i].href, data.promos[i].img));
+    });
+};
+
+$(window).on('load', function () {
+    window.qtSearchNavigation = [{
+            title: "Qt.io",
+            value: "www.qt.io"
+        }, {
+            title: "Resources",
+            value: "resources.qt.io"
+        }, {
+            title: "Blog",
+            value: "www.qt.io/blog"
+        }, {
+            filters: [{
+                title: "All",
+                value: "*"
+            }, {
+                title: "Qt",
+                value: "qt-6/*"
+            }, {
+                title: "Qt Creator",
+                value: "qtcreator/*"
+            }, {
+                title: "Squish",
+                value: "squish/*"
+            }, {
+                title: "Coco",
+                value: "coco/*"
+            }, {
+                title: "MCUs",
+                value: "QtForMCUs-2.6/*"
+            }, {
+                title: "Python",
+                value: "qtforpython-6/*"
+            }],
+            title: "Documentation",
+            value: "doc.qt.io"
+        }, {
+            title: "Wiki",
+            value: "wiki.qt.io"
+        }, {
+            title: "Forum",
+            value: "forum.qt.io"
+        }, {
+            title: "Marketplace",
+            value: "marketplace.qt.io"
+        }];
+
+    var docset = window.location.pathname.slice(1, window.location.pathname.lastIndexOf('/'))
+    if (docset)
+        window.qtSearchNavigation[3]['filters'].splice(0,0,{'title': 'Current', 'value': docset + '/*'});
+
+    $('.pre').append(preButtons);
+    $(window).resize(toggleWrap());
+
+    if (typeof tippy !== 'undefined') {
+        tippy('.pre-button.wrap', { trigger: 'mouseenter', content: 'Toggle line wrap', appendTo: 'parent' });
+        tippy('.pre-button.copy', { trigger: 'mouseenter', content: 'Copy to clipboard', appendTo: 'parent' });
+        tippy('.pre-button.copy', { trigger: 'click', content: 'Copied', appendTo: 'parent',
+              hideOnClick: false, onShow(t) { setTimeout(() => { t.hide(); }, 1000) }});
+    }
+    addPromo();
+});
+
+function resolveVersions(path) {
+    var docSet = '';
+    var currentVersion = '';
+    if (path === undefined || path.length == 0)
+        return false;
+    var parts = path[1].split('-');
+    if (parts.length < 2)
+        currentVersion = parts[0];
+    else
+        currentVersion = parts.pop();
+    docSet = parts.join('-');
+    if (!isNaN(parseInt(docSet.slice(-1), 10)))
+        docSet = docSet.slice(0,-1)
+    var doc = path[path.length - 1];
+    var versions = $('#qds-vdropdown');
+    $.getJSON("/.versions/" + docSet + ".json", function(data) {
+        for (var i = 0; i < data.versions.length; i++) {
+            (function(select, ver, current) {
+                $.ajax({
+                    type: "HEAD",
+                    async: true,
+                    url: data.versions[i].root + doc,
+                    success: function(data, success) {
+                        var selected = ver.root.endsWith(current + '/');
+                        select.append(new Option(ver.name, ver.root, selected, selected));
+                        select.css('visibility', 'visible');
+                    }
+                });
+            }(versions, data.versions[i], currentVersion));
+        }
+    }).fail(function() {
+        return false;
+    });
+    return true;
+}
+
+function handleSidebarExpand(current) {
+    var nested = $('.sidebar-nav-topic').length;
+    if (nested == 0)
+        return;
+    var toggle = $('#qds-ec-toggle');
+    if (!toggle)
+        return;
+    $(toggle).css('display', 'block');
+    $(toggle).toggleClass('expanded', current == ((1 << nested)-1));
+}
+
+function handleSidebar(path, activepage) {
+    $('.c-sidebar-navigation a[href="' + activepage + '"]').parent().addClass("c-sidebar-navigation--active");
+    var current = parseInt(localStorage.getItem(path)) || 0;
+    handleSidebarExpand(current);
+    if (current == 0)
+        return;
+    $('.sidebar-nav-topic').each(function() {
+        var id = $(this).attr('id');
+        if (id) {
+            var idx = parseInt(id.slice(9));
+            if (!isNaN(idx) && idx < 31)
+                if (current & (1 << idx))
+                    $(this).addClass('c-sidebar-navigation--open');
+        }
+    });
+}
+
+function populateTOC(toc) {
+    if (toc.text() === "Contents") {
+        var titles = $('.descr').find('h2, h3');
+        toc = toc.next().children().first();
+        if (toc.length && titles.length > toc.children().length) {
+            toc.empty();
+            titles.each(function() {
+                    var h = $(this).attr('id');
+                    if (!h) return;
+                    var t = $(this).text();
+                    var l = parseInt(this.nodeName[1] - 1);
+                    toc.append(`<li class="level${l}"><p><a href="#${h}">${t}</a></p></li>`);
+                });
+        }
+    }
+}
+
+$(document).ready(function(){
+    var path = window.location.pathname.split('/');
+    var docset = path[1];
+    handleSidebar(docset, path[path.length-1] + window.location.hash);
+    $('.sidebar-nav-topic').each(function() {
+        var id = $(this).attr('id');
+        if (!id)
+            return;
+        var idx = parseInt(id.slice(9));
+        if (isNaN(idx) || idx > 30)
+            return;
+        $('a:first', this).click(function() {
+            var current = parseInt(localStorage.getItem(docset)) || 0;
+            current = current ^ (1 << idx);
+            localStorage.setItem(docset, current);
+            handleSidebarExpand(current);
+        });
+    });
+
+    $('#qds-ec-toggle').click(function() {
+        var expand = $(this).toggleClass('expanded').hasClass('expanded');
+        $('.sidebar-nav-topic').each(function() {
+            $(this).toggleClass('c-sidebar-navigation--open', expand)
+        });
+        var state = 0;
+        if (expand)
+            state = (1 << $('.sidebar-nav-topic').length) - 1;
+        localStorage.setItem(docset, state);
+    });
+
+    if (typeof String.prototype.endsWith !== 'function') {
+        String.prototype.endsWith = function(suffix) {
+            return this.indexOf(suffix, this.length - suffix.length) !== -1;
+        };
+    }
+
+    resolveVersions(path);
+    $('#qds-vdropdown').on('change', function() {
+        var hash = window.location.hash;
+        var currentPath = window.location.pathname;
+        var page = currentPath.split('/').pop();
+        window.location = this.value + page + hash;
+    });
+    $('li.sidebar-nav-topic').css('visibility', 'visible');
+
+    var tocHead = $('aside.b-sidebar__content__right h6').first();
+    if (tocHead.length)
+        populateTOC(tocHead);
+
+    $(window).scroll(function(){
+        var scrollTop = $(document).scrollTop();
+        var anchors = $('div.context').find('h2,h3,h4');
+        var last = -1;
+        for (var i = 0; i < anchors.length; i++)
+            if (scrollTop > $(anchors[i]).offset().top - 35)
+                last = i;
+        $('nav ul.c-tableofcontents li').removeClass('active');
+        if (last == -1)
+            return;
+        var sel = 'nav ul.c-tableofcontents li p a[href="#' + $(anchors[last]).attr('id') + '"]';
+        $(sel).parent().parent().addClass('active');
+    });
+});

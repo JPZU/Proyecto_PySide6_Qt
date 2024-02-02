@@ -1,0 +1,63 @@
+<ns0:svg xmlns:ns0="http://www.w3.org/2000/svg" xmlns:ns1="http://www.w3.org/1999/xlink" width="576pt" height="19pt" viewBox="0.00 0.00 576.00 19.27">
+<ns0:g id="graph0" class="graph" transform="scale(1.4 1.4) rotate(0) translate(4 23)">
+<ns0:title>inheritance578f6b540f</ns0:title>
+<ns0:polygon fill="white" stroke="transparent" points="-4,4 -4,-23 803,-23 803,4 -4,4" />
+
+<ns0:g id="node1" class="node">
+<ns0:title>QtSql.QSqlTableModel</ns0:title>
+<ns0:polygon fill="none" stroke="black" stroke-width="0.5" points="799,-19 675,-19 675,0 799,0 799,-19" />
+<ns0:text text-anchor="middle" x="737" y="-7" font-family="Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans" font-size="10.00">QtSql.QSqlTableModel</ns0:text>
+</ns0:g>
+
+<ns0:g id="node2" class="node">
+<ns0:title>QtSql.QSqlQueryModel</ns0:title>
+<ns0:g id="a_node2"><ns0:a ns1:href="../PySide6/QtSql/QSqlQueryModel.html" ns1:title="QtSql.QSqlQueryModel" target="_top">
+<ns0:polygon fill="none" stroke="black" stroke-width="0.5" points="639,-19 511,-19 511,0 639,0 639,-19" />
+<ns0:text text-anchor="middle" x="575" y="-7" font-family="Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans" font-size="10.00">QtSql.QSqlQueryModel</ns0:text>
+</ns0:a>
+</ns0:g>
+</ns0:g>
+
+<ns0:g id="edge1" class="edge">
+<ns0:title>QtSql.QSqlQueryModel-&gt;QtSql.QSqlTableModel</ns0:title>
+<ns0:path fill="none" stroke="black" stroke-width="0.5" d="M639.24,-9.5C649.2,-9.5 659.53,-9.5 669.57,-9.5" />
+<ns0:polygon fill="black" stroke="black" stroke-width="0.5" points="669.79,-11.25 674.79,-9.5 669.79,-7.75 669.79,-11.25" />
+</ns0:g>
+
+<ns0:g id="node3" class="node">
+<ns0:title>QtCore.QAbstractTableModel</ns0:title>
+<ns0:polygon fill="none" stroke="black" stroke-width="0.5" points="475,-19 318,-19 318,0 475,0 475,-19" />
+<ns0:text text-anchor="middle" x="396.5" y="-7" font-family="Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans" font-size="10.00">QtCore.QAbstractTableModel</ns0:text>
+</ns0:g>
+
+<ns0:g id="edge2" class="edge">
+<ns0:title>QtCore.QAbstractTableModel-&gt;QtSql.QSqlQueryModel</ns0:title>
+<ns0:path fill="none" stroke="black" stroke-width="0.5" d="M475.17,-9.5C485.33,-9.5 495.68,-9.5 505.67,-9.5" />
+<ns0:polygon fill="black" stroke="black" stroke-width="0.5" points="505.86,-11.25 510.86,-9.5 505.86,-7.75 505.86,-11.25" />
+</ns0:g>
+
+<ns0:g id="node4" class="node">
+<ns0:title>QtCore.QAbstractItemModel</ns0:title>
+<ns0:polygon fill="none" stroke="black" stroke-width="0.5" points="282,-19 128,-19 128,0 282,0 282,-19" />
+<ns0:text text-anchor="middle" x="205" y="-7" font-family="Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans" font-size="10.00">QtCore.QAbstractItemModel</ns0:text>
+</ns0:g>
+
+<ns0:g id="edge3" class="edge">
+<ns0:title>QtCore.QAbstractItemModel-&gt;QtCore.QAbstractTableModel</ns0:title>
+<ns0:path fill="none" stroke="black" stroke-width="0.5" d="M282.26,-9.5C292.24,-9.5 302.51,-9.5 312.6,-9.5" />
+<ns0:polygon fill="black" stroke="black" stroke-width="0.5" points="312.85,-11.25 317.85,-9.5 312.85,-7.75 312.85,-11.25" />
+</ns0:g>
+
+<ns0:g id="node5" class="node">
+<ns0:title>QtCore.QObject</ns0:title>
+<ns0:polygon fill="none" stroke="black" stroke-width="0.5" points="92,-19 0,-19 0,0 92,0 92,-19" />
+<ns0:text text-anchor="middle" x="46" y="-7" font-family="Vera Sans, DejaVu Sans, Liberation Sans, Arial, Helvetica, sans" font-size="10.00">QtCore.QObject</ns0:text>
+</ns0:g>
+
+<ns0:g id="edge4" class="edge">
+<ns0:title>QtCore.QObject-&gt;QtCore.QAbstractItemModel</ns0:title>
+<ns0:path fill="none" stroke="black" stroke-width="0.5" d="M92.41,-9.5C101.98,-9.5 112.36,-9.5 122.8,-9.5" />
+<ns0:polygon fill="black" stroke="black" stroke-width="0.5" points="122.93,-11.25 127.93,-9.5 122.93,-7.75 122.93,-11.25" />
+</ns0:g>
+</ns0:g>
+</ns0:svg>
